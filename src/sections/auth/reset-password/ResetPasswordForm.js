@@ -33,7 +33,7 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
 
   const methods = useForm({
     resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: "eben.tre@outlook.com" },
+    defaultValues: { email: "" },
   });
 
   const {
