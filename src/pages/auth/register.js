@@ -64,14 +64,14 @@ export default function Register() {
         <HeaderStyle>
           <LogoImage />
 
-          {smUp && (
+          {/* {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account? {""}
               <NextLink href={PATH_AUTH.login} passhref="true">
                 <Link variant="subtitle2">Login</Link>
               </NextLink>
             </Typography>
-          )}
+          )} */}
         </HeaderStyle>
 
         <Container>
@@ -105,7 +105,7 @@ export default function Register() {
               .
             </Typography>
 
-            {!smUp && (
+            {/* {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
                 Already have an account?{" "}
                 <NextLink
@@ -122,7 +122,7 @@ export default function Register() {
                   </Link>
                 </NextLink>
               </Typography>
-            )}
+            )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

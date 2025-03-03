@@ -36,8 +36,8 @@ export default function AppSelectWalletOption() {
   const [privateKey, setPrivateKey] = useState("");
   const [importError, setImportError] = useState(null);
   const { data, error, isLoading } = useGetUserDataQuery();
+  console.log("🚀 ~ AppSelectWalletOption ~ data:", data);
   const [newWallet, setNewWallet] = useState(null);
-  console.log("🚀 ~ AppSelectWalletOption ~ data:", data)
 
   // -----------
   // Import Wallet
@@ -89,6 +89,7 @@ export default function AppSelectWalletOption() {
         {},
         { withCredentials: true }
       );
+      console.log(response, "sdjkfhgsdkjfygsd");
 
       console.log("Wallet created successfully:", response.data);
       // Optionally store the wallet info in state to display it
@@ -100,7 +101,6 @@ export default function AppSelectWalletOption() {
         variant: "success",
       });
     } catch (error) {
-      console.error("Error creating wallet:", error);
       const errorMsg =
         error.response?.data?.message ||
         "Something went wrong while creating the wallet.";
@@ -110,12 +110,11 @@ export default function AppSelectWalletOption() {
 
   return (
     <RootStyle>
-      {data && (
+      {data?.user?.walletAddress ? (
         <>
           <ChatBotSolanaWindow />
         </>
-      )}
-      {!data && (
+      ) : (
         <>
           <Container>
             <CardContent sx={{ height: "100%" }}>

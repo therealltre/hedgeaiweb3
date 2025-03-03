@@ -19,15 +19,15 @@ export const ListSubheaderStyle = styled((props) => (
   paddingBottom: theme.spacing(1),
   color: theme.palette.text.primary,
   transition: theme.transitions.create("opacity", {
-    duration: theme.transitions.duration.shorter,
-  }),
+    duration: theme.transitions.duration.shorter
+  })
 }));
 
 // ----------------------------------------------------------------------
 
 NavSectionVertical.propTypes = {
   isCollapse: PropTypes.bool,
-  navConfig: PropTypes.array,
+  navConfig: PropTypes.array
 };
 
 export default function NavSectionVertical({
@@ -40,10 +40,11 @@ export default function NavSectionVertical({
   const handleLogout = async () => {
     try {
       // Send POST request to logout endpoint using axios
-      await axios.post("http://localhost:5000/api/v1/auth/logout", {
-        withCredentials: true,
-      });
-      // On successful logout, redirect to the home page
+      await axios.post(
+        "http://localhost:5000/api/v1/auth/logout",
+        {},
+        { withCredentials: true }
+      );
       router.push("/");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -51,14 +52,22 @@ export default function NavSectionVertical({
   };
 
   return (
-    <Box {...other}>
+    <Box
+      {...other}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        ...(other.sx || {})
+      }}
+    >
       {navConfig.map((group) => (
         <List key={group.subheader} disablePadding sx={{ px: 2 }}>
           <ListSubheaderStyle
             sx={{
               ...(isCollapse && {
-                opacity: 0,
-              }),
+                opacity: 0
+              })
             }}
           >
             {group.subheader}
@@ -68,9 +77,20 @@ export default function NavSectionVertical({
           ))}
         </List>
       ))}
+
+      <Box sx={{ flexGrow: 1 }} />
       {/* Logout Button */}
-      <Box sx={{ px: 2, mt: 2 }}>
-        <Button variant="contained" color="primary" onClick={handleLogout}>
+      <Box sx={{ px: 2, py: 2 }}>
+        <Button
+          variant="contained"
+          onClick={handleLogout}
+          fullWidth
+          sx={{
+            backgroundColor: "#f44336",
+            color: "white",
+            "&:hover": { backgroundColor: "#d32f2f" }
+          }}
+        >
           Logout
         </Button>
       </Box>

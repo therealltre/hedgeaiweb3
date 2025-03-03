@@ -63,14 +63,14 @@ export default function Login() {
           <LogoImage />
           {/* <Logo /> */}
 
-          {smUp && (
+          {/* {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Don&apos;t have an account? {""}
               <NextLink href={PATH_AUTH.register} passhref="true">
                 <Link variant="subtitle2">Get started</Link>
               </NextLink>
             </Typography>
-          )}
+          )} */}
         </HeaderStyle>
 
         <Container maxWidth="sm">
@@ -88,7 +88,7 @@ export default function Login() {
 
             <LoginForm />
 
-            {!smUp && (
+            {/* {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don&apos;t have an account?{" "}
                 <NextLink
@@ -106,7 +106,7 @@ export default function Login() {
                   </Link>
                 </NextLink>
               </Typography>
-            )}
+            )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

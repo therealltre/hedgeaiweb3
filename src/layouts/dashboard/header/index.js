@@ -15,6 +15,7 @@ import { IconButtonAnimate } from "../../../components/animate";
 //
 import Searchbar from "./Searchbar";
 import LogoImage from "@/components/LogoImage";
+// import AccountPopover from "./AccountPopover";
 
 // ----------------------------------------------------------------------
 
@@ -95,9 +96,6 @@ export default function DashboardHeader({
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <LanguagePopover />
-          <NotificationsPopover />
-          <ContactsPopover />
           <AccountPopover />
         </Stack> */}
       </Toolbar>

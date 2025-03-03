@@ -2,8 +2,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // import { useRouter } from "next/router";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const schema = yup.object({
   password: yup
@@ -18,6 +25,8 @@ const schema = yup.object({
 
 export default function NewPasswordForm() {
   const router = useRouter(); // <-- Initialize the router
+  const [loading, setLoading] = useState(false);
+
   console.log("router.query.token >>", router.query.token);
   const {
     register,
@@ -28,21 +37,15 @@ export default function NewPasswordForm() {
   });
 
   const onSubmit = async (data) => {
-    // Get resetToken from URL params or another source
     const resetToken = router.query.token;
-
+    setLoading(true);
     try {
       const response = await fetch(
         "http://localhost:5000/api/v1/auth/reset-password",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            resetToken,
-            newPassword: data.password,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resetToken, newPassword: data.password }),
         }
       );
 
@@ -52,11 +55,13 @@ export default function NewPasswordForm() {
       }
 
       const result = await response.json();
-      console.log(result.message); // Success message
+      console.log(result.message);
       router.push("/auth/reset-password/success");
     } catch (error) {
       console.error("Error resetting password:", error.message);
-      // Display error feedback to the user if needed
+      // Optionally display an error message to the user
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,14 +89,19 @@ export default function NewPasswordForm() {
           error={!!errors.confirmPassword}
           helperText={errors.confirmPassword?.message}
         />
+
         <Button
           fullWidth
           variant="contained"
           sx={{ mt: 3 }}
           type="submit"
-          disabled={isSubmitting}
+          disabled={loading}
         >
-          {isSubmitting ? "Changing Password..." : "Change Password"}
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Change Password"
+          )}
         </Button>
       </form>
     </Box>

@@ -12,7 +12,6 @@ import Layout from "../../../layouts";
 import Page from "../../../components/Page";
 // sections
 import { ResetPasswordForm } from "../../../sections/auth/reset-password";
-// assets
 import { SentIcon } from "../../../assets";
 import { useRouter } from "next/router";
 
@@ -63,11 +62,6 @@ export default function ResetPassword() {
                   onSent={() => setSent(true)}
                   onGetEmail={(value) => setEmail(value)}
                 />
-
-                {/* <ResetPasswordForm
-                onSent={handleSuccess}
-                onGetEmail={(value) => setEmail(value)}
-              /> */}
 
                 <NextLink href={PATH_AUTH.login} passhref="true">
                   <Button fullWidth size="large" sx={{ mt: 1 }}>

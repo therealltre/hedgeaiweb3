@@ -6,21 +6,29 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoadingButton } from "@mui/lab";
-import { Stack, Alert, IconButton, InputAdornment, Link } from "@mui/material";
+import {
+  Stack,
+  Alert,
+  IconButton,
+  InputAdornment,
+  Link,
+  Typography
+} from "@mui/material";
 import Iconify from "../../../components/Iconify";
 import {
   RHFTextField,
   FormProvider,
-  RHFCheckbox,
+  RHFCheckbox
 } from "../../../components/hook-form";
 import { loginUser } from "@/apiCalls/Auth";
 import { PATH_AUTH } from "@/routes/paths";
+import NextLink from "next/link";
 
 export default function LoginForm() {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
+  const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -30,7 +38,7 @@ export default function LoginForm() {
     terms: Yup.boolean().oneOf(
       [true],
       "You must agree to our terms and conditions"
-    ),
+    )
   });
 
   const methods = useForm({
@@ -38,34 +46,32 @@ export default function LoginForm() {
     defaultValues: {
       email: "",
       password: "",
-      terms: true,
-    },
+      terms: true
+    }
   });
 
   const {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = methods;
 
   const onSubmit = async (data) => {
+    setIsApiCallInProgress(true);
     try {
       const response = await loginUser(data.email, data.password);
-
-      // Store tokens in Redux and localStorage
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
-
-      // Redirect to dashboard
       enqueueSnackbar("Login success!");
+      setIsApiCallInProgress(false);
       router.push("/dashboard");
     } catch (error) {
-      enqueueSnackbar("Login failed: " + error.message, {
-        variant: "error",
-      });
+      enqueueSnackbar("Login failed: " + error.message, { variant: "error" });
       reset();
       setError("afterSubmit", { message: "Login error" });
+    } finally {
+      setIsApiCallInProgress(false);
     }
   };
 
@@ -93,7 +99,7 @@ export default function LoginForm() {
                   />
                 </IconButton>
               </InputAdornment>
-            ),
+            )
           }}
         />
       </Stack>
@@ -108,8 +114,6 @@ export default function LoginForm() {
         <Link href={PATH_AUTH.resetPassword} variant="subtitle2">
           Forgot password?
         </Link>
-
-        {/* <Link variant="subtitle2">Forgot password?</Link> */}
       </Stack>
 
       <LoadingButton
@@ -117,10 +121,29 @@ export default function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isSubmitting}
+        loading={isApiCallInProgress}
+        disabled={isApiCallInProgress}
       >
         Login
       </LoadingButton>
+
+      <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+        Don&apos;t have an account?{" "}
+        <NextLink
+          href={PATH_AUTH.register}
+          passhref="true"
+          underline="none"
+          style={{ textDecoration: "none" }}
+        >
+          <Link
+            variant="subtitle2"
+            underline="none"
+            style={{ textDecoration: "none" }}
+          >
+            Get started
+          </Link>
+        </NextLink>
+      </Typography>
     </FormProvider>
   );
 }
